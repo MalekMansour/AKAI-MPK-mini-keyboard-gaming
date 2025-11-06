@@ -1,13 +1,12 @@
 import mido
 import json
 import os
-import keyboard as kb  # to detect Ctrl+F to finish
+import keyboard as kb  
 from datetime import datetime
 
 print("🎛️ MIDI Key Mapper Setup")
 print("Make sure your MIDI device is plugged in!\n")
 
-# --- Step 1: List all connected MIDI devices ---
 devices = mido.get_input_names()
 if not devices:
     print("❌ No MIDI devices found! Plug one in and try again.")
@@ -17,7 +16,6 @@ print("🎹 Available MIDI Devices:")
 for i, name in enumerate(devices, 1):
     print(f" {i}. {name}")
 
-# Let user pick
 while True:
     try:
         choice = int(input("\nSelect your MIDI device (number): "))
@@ -34,7 +32,6 @@ print(f"\n✅ Connected to {input_name}\n")
 NOTE_TO_KEY = {}
 mouse_keys = {}
 
-# Helper to get a MIDI input message
 def get_note_input(port):
     while True:
         msg = port.receive()
@@ -43,7 +40,6 @@ def get_note_input(port):
         elif msg.type == 'control_change':
             return f"cc_{msg.control}"
 
-# --- Step 2: Main Menu ---
 def main_menu():
     print("\n===== MAIN MENU =====")
     print("1️⃣  Bind Keyboard Keys")
@@ -53,7 +49,6 @@ def main_menu():
     choice = input("\nSelect an option (1-4): ").strip()
     return choice
 
-# --- Step 3: Bind mouse controls ---
 def bind_mouse_controls(port):
     print("\n🖱️ Let's bind mouse controls.")
     print("Press the piano key you want to use for each action.\n")
@@ -72,7 +67,6 @@ def bind_mouse_controls(port):
     NOTE_TO_KEY["mouse_movement"] = mouse_keys
     print("\n✅ Finished binding mouse controls!")
 
-# --- Step 4: Bind keyboard keys ---
 def bind_keyboard_keys(port):
     print("\n⌨️ Binding keyboard keys.")
     print("Press a key on your COMPUTER keyboard, then press a key on your MIDI keyboard.")
@@ -97,7 +91,6 @@ def bind_keyboard_keys(port):
             print("\n✅ Finished keyboard binding.")
             break
 
-# --- Step 5: Save mappings ---
 def save_mappings():
     os.makedirs("piano_keybinds", exist_ok=True)
     name = input("\n💾 Enter a name for this keybind sheet: ").strip()
@@ -109,8 +102,8 @@ def save_mappings():
         json.dump({"done": NOTE_TO_KEY}, f, indent=4)
 
     print(f"✅ Saved mapping to {path}")
-
-# --- Step 6: Main Loop ---
+    
+# Main Loop
 with mido.open_input(input_name) as port:
     while True:
         choice = main_menu()
