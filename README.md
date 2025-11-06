@@ -7,7 +7,7 @@ This project allows you to use your MIDI keyboard or controller (for example, th
 ## Features
 
 - Use your MIDI keyboard to play PC games.
-- Control mouse movement, left and right clicks, and even the middle mouse button.
+- Control mouse movement, left and right clicks, and middle mouse button.
 - Map MIDI notes, pads, and knobs to keyboard keys.
 - Continuous mouse movement while a key is held.
 - Create and save multiple custom keybind profiles for different games.
