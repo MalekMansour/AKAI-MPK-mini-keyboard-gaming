@@ -6,14 +6,12 @@ import os
 from pynput.keyboard import Controller as KeyboardController, Key
 from pynput.mouse import Controller as MouseController, Button
 
-# Initialize controllers
 keyboard = KeyboardController()
 mouse = MouseController()
 
 print("🎹 MIDI Piano Launcher")
 print("=========================\n")
 
-# --- STEP 1: Pick MIDI Device ---
 devices = mido.get_input_names()
 if not devices:
     print("❌ No MIDI devices detected! Plug one in and try again.")
@@ -34,7 +32,6 @@ while True:
     except ValueError:
         print("❌ Please enter a number.")
 
-# --- STEP 2: Pick Mapping File ---
 keybind_folder = "piano_keybinds"
 if not os.path.exists(keybind_folder):
     print(f"❌ Folder '{keybind_folder}' not found! Please create mappings first.")
@@ -60,7 +57,6 @@ while True:
     except ValueError:
         print("❌ Please enter a number.")
 
-# --- STEP 3: Load Mapping ---
 with open(selected_file, "r") as f:
     mappings = json.load(f)["done"]
 
@@ -77,11 +73,11 @@ print(f"\n✅ Loaded mapping from '{files[file_choice - 1]}'")
 print(f"✅ Connected to '{input_name}'")
 print("\n🎶 Ready! Press your MIDI keys/pads...\n")
 
-# --- FUNCTIONS ---
+# Functions
 
 def move_mouse_loop(note):
     """Continuously move the mouse while the note is held."""
-    speed = 5  # pixels per tick
+    speed = 5  # sens
     while note in HOLDING_NOTES:
         if note == MOUSE_MOVEMENT.get("up"):
             mouse.move(0, -speed)
@@ -140,7 +136,7 @@ def handle_note_off(note):
         except AttributeError:
             keyboard.release(key)
 
-# --- MAIN LOOP ---
+# Main Loop
 with mido.open_input(input_name) as port:
     for msg in port:
         if msg.type == "note_on":
