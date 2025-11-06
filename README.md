@@ -48,3 +48,17 @@ This project allows you to use your MIDI keyboard or controller (for example, th
    - Once loaded, your MIDI keys and pads will now function as the mapped keyboard and mouse inputs.
 
 You can create multiple profiles for different games or applications, then easily switch between them by selecting a different saved file.
+
+## Notice
+- Some games with anti-input systems may not accept simulated mouse clicks or keyboard presses.
+- Works best with windowed or borderless applications.
+- Continuous mouse movement uses threading to simulate held input, allowing for smoother control.
+
+## Technologies Used
+- Python 3
+- mido – for MIDI input/output
+- python-rtmidi – for low-level MIDI communication
+- pynput – for keyboard and mouse control
+
+## License
+This project is open-source and free for personal modification and experimentation. Credit is appreciated if you publish a derived version.
