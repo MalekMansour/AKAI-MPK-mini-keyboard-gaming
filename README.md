@@ -1,71 +1,44 @@
-# 🎹 Piano Controller – Turn Your MIDI Keyboard Into a Game Controller
+# MIDI Keyboard to Mouse & Keyboard Mapper
 
-## 🧠 What This Project Is
-Piano Controller is a Python-based tool that lets you **turn any MIDI piano or pad controller** (like the AKAI MPK Mini) into a **fully functional game controller or keyboard emulator**.
-
-Instead of pressing WASD on your keyboard, you can use your **piano keys or pads to move**, **click the mouse**, **jump**, or even **aim**. It’s completely customizable — every piano key, knob, or pad can be mapped to a keyboard or mouse action.
-
-This means you can literally **play games, browse the web, or even make music and code using your MIDI piano**.
+This project allows you to use your MIDI keyboard or controller (for example, the Akai MPK Mini) as a PC input device. It converts MIDI signals into keyboard and mouse inputs, enabling you to play games or control your computer using your MIDI instrument.
 
 ---
 
-## ✨ Features
-- 🎛️ **Fully Customizable Keybinds**  
-  Choose which piano keys or knobs control your keyboard and mouse actions.
-  
-- 🖱️ **Mouse & Keyboard Support**  
-  Control both mouse movement and clicks, or emulate keyboard presses.
+## Features
 
-- 🎹 **Multi-Device Support**  
-  Works with any connected MIDI keyboard or controller — pick which one to use.
-
-- 💾 **Keybind Profiles**  
-  Save multiple keybind setups as `.json` files inside the `piano_keybinds` folder.  
-  Quickly switch between them for different games or use cases.
-
-- 🔁 **Real-Time Response**  
-  Your MIDI input instantly translates to key presses or mouse movements.
+- Use your MIDI keyboard to play PC games.
+- Control mouse movement, left and right clicks, and even the middle mouse button.
+- Map MIDI notes, pads, and knobs to keyboard keys.
+- Continuous mouse movement while a key is held.
+- Create and save multiple custom keybind profiles for different games.
 
 ---
 
-## 🕹️ What You Can Do With It
+## How It Works
 
-You can use your piano as a controller for:
-
-| Category | Example Games |
-|-----------|----------------|
-| 🎯 FPS / Shooters | Valorant, CS2, Overwatch *(for movement, jumping, and some aiming)* |
-| 🧩 Platformers | Celeste, Hollow Knight, Cuphead |
-| 🚗 Racing | Need for Speed, Forza Horizon |
-| 🎶 Rhythm & Fun | Beat Saber (PC), OSU!, StepMania |
-| 💻 General Use | Controlling the mouse, shortcuts, or macros |
-
-While **some games with strict anti-cheat systems (like Valorant)** may block external input emulation, most indie, single-player, and creative software works perfectly.
+- The program listens for MIDI input using the `mido` library.
+- Each MIDI note, pad, or knob can be assigned to a computer key or mouse action.
+- The configuration is stored in JSON format inside a `piano_keybinds` folder.
+- The `launch_midi.py` script reads your selected profile and runs the key mappings in real time.
 
 ---
 
-## ⚙️ How It Works
-1. Your MIDI keyboard sends **note_on**, **note_off**, and **control_change** signals.  
-2. The program listens to those signals using the `mido` library.  
-3. Each MIDI note or control is mapped to a corresponding **keyboard or mouse action** using `pynput`.  
-4. You can save these mappings in a `.json` file and reload them later.
+## Example Use Cases
 
----
-
-## 🧩 Files Overview
-| File | Description |
+| Game | Example Use |
 |------|--------------|
-| `setup_mapping.py` | Interactive setup script to create or edit your piano keybinds. |
-| `launch_midi.py` | Launch your chosen MIDI device with a saved keybind profile. |
-| `piano_keybinds/` | Folder containing your saved keybind sheets in JSON format. |
+| Valorant | Map WASD to pads, left/right click to shoot, knobs for camera movement |
+| Minecraft | Control player movement, place/break blocks, open inventory |
+| Coding | Assign macros like copy/paste, undo, or run scripts |
+| DAWs | Use pads for transport controls or effect toggles |
 
 ---
 
-## 🚀 How to Use
+## Setup and Usage
 
-### 1️⃣ Install Dependencies
-Make sure you have Python 3.10+ installed, then run:
+### 1. Install Dependencies
 
+Make sure Python 3 is installed, then run:
+
+```bash
 pip install mido python-rtmidi pynput
-
-
