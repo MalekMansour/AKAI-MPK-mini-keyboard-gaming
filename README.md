@@ -34,11 +34,7 @@ This project allows you to use your MIDI keyboard or controller (for example, th
 
 ---
 
-## Setup and Usage
-
-### 1. Install Dependencies
-
-Make sure Python 3 is installed, then run:
-
-```bash
-pip install mido python-rtmidi pynput
+## How To use
+- Run midi_keyboard.py and pick your keyboard keybinds and your mouse keybinds.
+- Save your keybind file once you're done.
+- Run launc_midi.py and pick your desired file.
