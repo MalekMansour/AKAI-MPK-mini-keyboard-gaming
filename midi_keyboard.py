@@ -76,10 +76,10 @@ def bind_mouse_controls(port):
 def bind_keyboard_keys(port):
     print("\n⌨️ Binding keyboard keys.")
     print("Press a key on your COMPUTER keyboard, then press a key on your MIDI keyboard.")
-    print("When you're done, press Ctrl + F to finish.\n")
+    print("When you're done, press Ctrl + C to finish.\n")
 
     while True:
-        if kb.is_pressed("ctrl+f"):
+        if kb.is_pressed("ctrl+c"):
             print("✅ Finished keyboard binding!")
             break
 
