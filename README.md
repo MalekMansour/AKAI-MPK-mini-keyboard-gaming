@@ -35,6 +35,16 @@ This project allows you to use your MIDI keyboard or controller (for example, th
 ---
 
 ## How To use
-- Run midi_keyboard.py and pick your keyboard keybinds and your mouse keybinds.
-- Save your keybind file once you're done.
-- Run launc_midi.py and pick your desired file.
+
+1. Run `midi_keyboard.py` to create your custom keybinds.
+   - Choose which connected MIDI keyboard or controller you want to use.
+   - Map your keyboard keys and mouse actions to specific MIDI notes or pads.
+   - Once finished, save your configuration when prompted.  
+     Your keybind file will be saved automatically in the `piano_keybinds` folder.
+
+2. Run `launch_midi.py` to start using your MIDI keyboard as a controller.
+   - Select the same MIDI device you configured earlier.
+   - Choose which saved keybind file you want to load.
+   - Once loaded, your MIDI keys and pads will now function as the mapped keyboard and mouse inputs.
+
+You can create multiple profiles for different games or applications, then easily switch between them by selecting a different saved file.
