@@ -1,44 +1,87 @@
 import mido
 import json
 import threading
+import time
+import os
 from pynput.keyboard import Controller as KeyboardController, Key
 from pynput.mouse import Controller as MouseController, Button
-import time
 
-# Controllers
+# Initialize controllers
 keyboard = KeyboardController()
 mouse = MouseController()
 
-# Load mapping
-with open("midi_mapping.json", "r") as f:
+print("🎹 MIDI Piano Launcher")
+print("=========================\n")
+
+# --- STEP 1: Pick MIDI Device ---
+devices = mido.get_input_names()
+if not devices:
+    print("❌ No MIDI devices detected! Plug one in and try again.")
+    exit()
+
+print("🎛️ Available MIDI Devices:")
+for i, name in enumerate(devices, 1):
+    print(f" {i}. {name}")
+
+while True:
+    try:
+        device_choice = int(input("\nSelect a MIDI device (number): "))
+        if 1 <= device_choice <= len(devices):
+            input_name = devices[device_choice - 1]
+            break
+        else:
+            print("❌ Invalid choice.")
+    except ValueError:
+        print("❌ Please enter a number.")
+
+# --- STEP 2: Pick Mapping File ---
+keybind_folder = "piano_keybinds"
+if not os.path.exists(keybind_folder):
+    print(f"❌ Folder '{keybind_folder}' not found! Please create mappings first.")
+    exit()
+
+files = [f for f in os.listdir(keybind_folder) if f.endswith(".json")]
+if not files:
+    print(f"❌ No mapping files found in '{keybind_folder}'!")
+    exit()
+
+print("\n📁 Available Keybind Sheets:")
+for i, filename in enumerate(files, 1):
+    print(f" {i}. {filename}")
+
+while True:
+    try:
+        file_choice = int(input("\nSelect a keybind sheet (number): "))
+        if 1 <= file_choice <= len(files):
+            selected_file = os.path.join(keybind_folder, files[file_choice - 1])
+            break
+        else:
+            print("❌ Invalid choice.")
+    except ValueError:
+        print("❌ Please enter a number.")
+
+# --- STEP 3: Load Mapping ---
+with open(selected_file, "r") as f:
     mappings = json.load(f)["done"]
 
 MOUSE_MOVEMENT = mappings.get("mouse_movement", {})
 HOLDING_NOTES = set()
 
-# Map string names to actual mouse buttons
 MOUSE_BUTTONS = {
     "left_click": Button.left,
-    "right_click": Button.right
+    "right_click": Button.right,
+    "middle_click": Button.middle
 }
 
-# Detect MIDI input
-input_name = None
-for name in mido.get_input_names():
-    if "mpk" in name.lower():
-        input_name = name
-        break
+print(f"\n✅ Loaded mapping from '{files[file_choice - 1]}'")
+print(f"✅ Connected to '{input_name}'")
+print("\n🎶 Ready! Press your MIDI keys/pads...\n")
 
-if not input_name:
-    print("❌ MPK Mini not found! Connect it and try again.")
-    exit()
+# --- FUNCTIONS ---
 
-print(f"✅ Connected to {input_name}")
-print("Ready! Press your MIDI keys/pads...")
-
-# Mouse movement loop
 def move_mouse_loop(note):
-    speed = 5  # pixels per step
+    """Continuously move the mouse while the note is held."""
+    speed = 5  # pixels per tick
     while note in HOLDING_NOTES:
         if note == MOUSE_MOVEMENT.get("up"):
             mouse.move(0, -speed)
@@ -50,7 +93,6 @@ def move_mouse_loop(note):
             mouse.move(speed, 0)
         time.sleep(0.01)
 
-# Mouse button functions
 def press_mouse(note_key):
     btn = MOUSE_BUTTONS.get(note_key)
     if btn:
@@ -61,7 +103,6 @@ def release_mouse(note_key):
     if btn:
         mouse.release(btn)
 
-# Handle note_on
 def handle_note_on(note):
     if note in HOLDING_NOTES:
         return
@@ -69,15 +110,10 @@ def handle_note_on(note):
 
     key = mappings.get(str(note)) or mappings.get(f"cc_{note}")
 
-    # Mouse clicks
     if key in MOUSE_BUTTONS:
         press_mouse(key)
-
-    # Mouse movement
     elif note in MOUSE_MOVEMENT.values():
         threading.Thread(target=move_mouse_loop, args=(note,), daemon=True).start()
-
-    # Keyboard keys
     elif key:
         try:
             if len(key) == 1:
@@ -87,18 +123,14 @@ def handle_note_on(note):
         except AttributeError:
             keyboard.press(key)
 
-# Handle note_off
 def handle_note_off(note):
     if note in HOLDING_NOTES:
         HOLDING_NOTES.remove(note)
 
     key = mappings.get(str(note)) or mappings.get(f"cc_{note}")
 
-    # Mouse clicks
     if key in MOUSE_BUTTONS:
         release_mouse(key)
-
-    # Keyboard keys
     elif key:
         try:
             if len(key) == 1:
@@ -108,7 +140,7 @@ def handle_note_off(note):
         except AttributeError:
             keyboard.release(key)
 
-# Main loop
+# --- MAIN LOOP ---
 with mido.open_input(input_name) as port:
     for msg in port:
         if msg.type == "note_on":
@@ -119,6 +151,4 @@ with mido.open_input(input_name) as port:
         elif msg.type == "note_off":
             handle_note_off(msg.note)
         elif msg.type == "control_change":
-            # Optional: treat knobs as keys
             handle_note_on(msg.control)
-
