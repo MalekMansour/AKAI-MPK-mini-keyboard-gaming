@@ -62,4 +62,4 @@ You can create multiple profiles for different games or applications, then easil
 - pynput – for keyboard and mouse control
 
 ## License
-This project is open-source and free for personal modification and experimentation. Credit is appreciated if you publish a derived version.
+This project is open source and free for personal modification and experimentation. Credit is appreciated if you publish a derived version.
