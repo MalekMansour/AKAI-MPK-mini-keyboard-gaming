@@ -1,6 +1,6 @@
 # MIDI Keyboard to Mouse & Keyboard Mapper
 
-This project allows you to use your MIDI keyboard or controller (for example, the Akai MPK Mini) as a PC input device. It converts MIDI signals into keyboard and mouse inputs, enabling you to play games or control your computer using your MIDI instrument.
+This project allows you to use your MIDI keyboard (for example, the Akai MPK Mini) as a PC input device. It converts MIDI signals into keyboard and mouse inputs, enabling you to play games or control your computer using your MIDI instrument.
 
 
 ![MIDI Controller Demo](https://medias.audiofanzine.com/images/normal/akai-mpk-mini-2011205.jpg)
